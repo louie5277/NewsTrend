@@ -1,0 +1,9 @@
+output/
+build/
+dist/
+__pycache__/
+*.pyc
+.env
+.vscode/
+.venv/
+*.spec
