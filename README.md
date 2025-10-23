@@ -31,7 +31,10 @@ Pulls from **SerpApi (Google News)** + **NewsAPI**, de-dupes, time-decays, ranks
 
 ---
 
-## ▶️ How to Use
+## ▶️ How to Use: Desktop App (Tkinter)
+### Ensure you have .env and python installed!!
+
+`python program.py`
 
 •Type a Query, adjust Days / Top-K / Half-life, then Run
 
