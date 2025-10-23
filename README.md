@@ -1,176 +1,69 @@
-🗞️ NewsTrend — Keyword Co-Trends & Broad Topic Miner
+<p align="center">
+  <img src="https://img.shields.io/badge/NewsTrend-Keyword%20Co--Trends%20%26%20Topic%20Radar-111111?style=for-the-badge&labelColor=111111&color=0ea5e9" alt="NewsTrend banner">
+</p>
 
-Find what’s trending inside a topic in minutes.
-NewsTrend pulls headlines from NewsAPI + SerpApi (Google News), normalizes timestamps to UTC, applies recency-weighted scoring, and outputs clean CSV and Markdown briefs. A simple Tkinter app is included for non-technical users.
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-3776ab?style=for-the-badge&logo=python&logoColor=white">
+  <img alt="Platforms" src="https://img.shields.io/badge/Platforms-Windows%20%7C%20macOS%20%7C%20Linux-4b5563?style=for-the-badge">
+  <img alt="Interface" src="https://img.shields.io/badge/Interface-CLI%20%26%20Tkinter%20GUI-8b5cf6?style=for-the-badge">
+  <img alt="SerpApi" src="https://img.shields.io/badge/API-SerpApi-22c55e?style=for-the-badge">
+  <img alt="NewsAPI" src="https://img.shields.io/badge/API-NewsAPI-f59e0b?style=for-the-badge">
+</p>
 
-✨ Features
+---
 
-✅ Two modes:
-• Keyword (default) → co-trending phrases around a seed query using TF-IDF(Term Frequency–Inverse Document Frequency) (1–3 grams) + time decay
-• Broad → overall topics via RAKE keyphrase extraction + time decay
+# 🗞️ NewsTrend — Keyword Co-Trends & Topic Radar
 
-✅ Multi-source fetch: NewsAPI + SerpApi, de-duped by URL
+Find what’s *actually* trending around a keyword across the news cycle.  
+Pulls from **SerpApi (Google News)** + **NewsAPI**, de-dupes, time-decays, ranks co-occurring phrases, and saves **CSV + Markdown**. Comes with a simple **Tkinter GUI** and a CLI.
 
-✅ Freshness aware: exponential decay with configurable half-life
+---
 
-✅ Clean exports: CSV (topics/cotopics) + Markdown (report/coreport)
+## ✨ Features
 
-✅ Desktop app: Tkinter GUI with double-click to open articles
+- ✅ **Two sources**: SerpApi (Google News) + NewsAPI (optional)
+- ✅ **Co-trend mining** (TF-IDF(Term frequency) + recency decay) for a given keyword
+- ✅ **Broad mode** (RAKE keyphrases) to surface general topics
+- ✅ **Clean outputs**: `*.csv` (topic, score, count) + `*.md` report with linked recent articles (UTC timestamps)
+- ✅ **Tkinter desktop app** for non-technical users
+- ✅ **Robust date parsing** with fallbacks & de-dupe by URL
+- ✅ **Free-tier friendly** knobs & backoffs
 
-✅ Config via .env: language, lookback days, result caps, etc.
+---
 
-🔗 Live Demo
+## ▶️ How to Use: Desktop App (Tkinter)
+### Ensure you have .env and python installed!!
 
-No hosted demo — run locally or package as a Windows .exe (guide below).
+`python program.py`
 
-🧰 Tech Stack
-Area	Choices
-Core	Python 3.10–3.12, requests, python-dotenv, tenacity
-NLP	scikit-learn (TF-IDF), rake-nltk, nltk, numpy, pandas
-Date	dateparser, python-dateutil
-APIs	NewsAPI, SerpApi (Google News)
-App	Tkinter GUI (program.py)
-💡 Example Queries
+•Type a Query, adjust Days / Top-K / Half-life, then Run
 
-“Alabama shooting”
+•Top table: ranked topics │ Bottom table: recent articles
 
-“iPhone 16”
+•Double-click an article to open the link
 
-“US elections”
+•Save Markdown / Save CSV directly from the UI
 
-“OpenAI”
+# Minimal Config via .env
+| Key                             | What it does                            |
+| ------------------------------- | --------------------------------------- |
+| `SERPAPI_API_KEY`               | Required. Google News via SerpApi       |
+| `NEWSAPI_KEY`                   | Optional. NewsAPI “everything” endpoint |
+| `LANG`                          | Search language (e.g. `en`)             |
+| `DAYS`                          | Lookback for NewsAPI                    |
+| `TOP_K`                         | Number of topics to show                |
+| `HALF_LIFE_H`                   | Recency half-life (hours)               |
+| `NEWSAPI_MAX_RESULTS`           | Cap for free tier (default 100)         |
+| `SERPAPI_NUM` / `SERPAPI_PAGES` | Page size/pages for Google News         |
+| `SERPAPI_PHRASE`                | `1` = search exact phrase `"query"`     |
 
-“Hurricane Florida”
+---
 
-Keyword mode automatically removes generic seed terms (e.g., alabama, shooting, police) so you see contextual phrases (e.g., Montgomery mass shooting, 12 injured, bond).
+# 🧭 Newsroom Value (at a glance)
+💡 Faster signal — Immediately see what’s rising with your term (e.g., “Alabama shooting”) without sifting feeds.
 
-🚀 Quick Start
-# 1) Create env
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS/Linux
-source .venv/bin/activate
+🧱 Actionable — Ranked co-topics + freshest links → plug into alerts, pitches, and briefs.
 
-# 2) Install deps
-pip install -r requirements.txt
-# or:
-pip install requests python-dotenv tenacity pandas scikit-learn numpy scipy nltk rake-nltk python-dateutil dateparser tqdm
+🧑‍💻 Human-in-loop — CSV + MD keep editors in control; tweak knobs for recall vs. precision.
 
-
-# Create a .env in the project root:
-
-# API keys
-NEWSAPI_KEY=your_newsapi_key
-SERPAPI_API_KEY=your_serpapi_key
-
-# Defaults
-LANG=en
-DAYS=7
-TOP_K=15
-HALF_LIFE_H=36
-
-# Source knobs
-NEWSAPI_MAX_RESULTS=100          # free tier cap
-NEWSAPI_SEARCH_IN=title,description
-SERPAPI_NUM=100
-SERPAPI_PAGES=2
-SERPAPI_PHRASE=0                 # set 1 to quote the query (exact phrase)
-REQUEST_TIMEOUT=20
-
-🧪 Run (CLI)
-
-Keyword (co-trends) — default
-
-python main.py --queries "Alabama shooting, iPhone 16"
-
-
-Broad topics
-
-python main.py --mode broad --queries "technology, sports"
-
-
-What you’ll get (in output/):
-
-Keyword mode → cotopics_<slug>.csv and coreport_<slug>.md
-
-Broad mode → topics_<slug>.csv and report_<slug>.md
-
-🖥️ GUI App (Tkinter)
-python program.py
-
-
-Enter Query, adjust Days / Top-K / Half-life, click Run
-
-Top table: topics · Bottom table: articles (double-click to open)
-
-Save Markdown / Save CSV directly from the UI
-
-⚙️ How It Works
-
-Pipeline
-
-Fetch from NewsAPI + SerpApi, de-dupe by URL, require parseable published_at (coerced to UTC), sort newest→oldest.
-
-Apply recency decay:
-weight = 0.5 ** (hours_since_pub / HALF_LIFE_H)
-
-Keyword mode:
-
-Build docs: title + ". " + summary
-
-TF-IDF (1–3 grams, English stopwords, min_df=2)
-
-Score = wᵀ · X (recency-weighted term sum)
-
-Remove seed/generic tokens → rank by normalized score (0–10)
-
-Broad mode:
-
-RAKE per article → aggregate decayed scores per phrase → rank
-
-🧩 Outputs
-
-CSV (topic, score, count) — easy to sort / chart
-Markdown — newsroom-friendly brief + linked recent articles (UTC timestamps)
-
-🧯 Troubleshooting
-
-No results / “no signal”
-
-Ensure .env is loaded (print(os.getenv("NEWSAPI_KEY")) in a REPL).
-
-NewsAPI free plan returns up to 100 items → tune NEWSAPI_MAX_RESULTS, page sizes.
-
-SerpApi dates can be messy; we normalize most formats + relative strings.
-If you see drops, try SERPAPI_PHRASE=1 (exact phrase) or reduce SERPAPI_PAGES.
-
-NLTK errors (punkt / punkt_tab)
-
-python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords')"
-
-📦 Build a Windows EXE (optional)
-pip install pyinstaller
-pyinstaller --name NewsTrendGUI --onefile --noconsole --collect-data dateparser program.py
-
-
-Put a .env next to the exe.
-
-If NLTK data is needed at runtime, add:
-
---add-data "C:\Users\<you>\AppData\Roaming\nltk_data;nltk_data"
-
-📁 Project Layout
-NewsTrend/
- ├─ main.py                # CLI
- ├─ program.py             # Tkinter GUI
- ├─ news_sources.py        # NewsAPI + SerpApi clients, date parsing
- ├─ keyword_trending.py    # co-trend analysis (TF-IDF + decay)
- ├─ topic_miner.py         # broad topic miner (RAKE + decay)
- ├─ analysis.py            # CSV/Markdown writers
- └─ output/                # generated reports
-
-✅ License & Use
-
-Prototype for internal newsroom analytics.
-Respect rate limits and terms of service for all APIs. Use scores directionally.
+🔌 Scalable — Add schedules, Slack/Teams routing, and thresholds for on-duty desks.
