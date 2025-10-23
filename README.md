@@ -6,7 +6,7 @@ NewsTrend pulls headlines from NewsAPI + SerpApi (Google News), normalizes times
 ✨ Features
 
 ✅ Two modes:
-• Keyword (default) → co-trending phrases around a seed query using TF-IDF (1–3 grams) + time decay
+• Keyword (default) → co-trending phrases around a seed query using TF-IDF(Term Frequency–Inverse Document Frequency) (1–3 grams) + time decay
 • Broad → overall topics via RAKE keyphrase extraction + time decay
 
 ✅ Multi-source fetch: NewsAPI + SerpApi, de-duped by URL
@@ -55,10 +55,10 @@ source .venv/bin/activate
 # 2) Install deps
 pip install -r requirements.txt
 # or:
-# pip install requests python-dotenv tenacity pandas scikit-learn numpy scipy nltk rake-nltk python-dateutil dateparser tqdm
+pip install requests python-dotenv tenacity pandas scikit-learn numpy scipy nltk rake-nltk python-dateutil dateparser tqdm
 
 
-Create a .env in the project root:
+# Create a .env in the project root:
 
 # API keys
 NEWSAPI_KEY=your_newsapi_key
