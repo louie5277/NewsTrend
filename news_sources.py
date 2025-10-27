@@ -1,4 +1,5 @@
 # news_sources.py
+import sys
 import os, time, math, re
 from typing import List, Dict, Any
 from datetime import datetime, timezone, timedelta
@@ -6,9 +7,10 @@ import requests
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from dateutil.relativedelta import relativedelta
 from dateutil import parser as duparser
-from dotenv import load_dotenv
+from config_loader import load_env_near_exe
 
-load_dotenv(override=True)
+env_info = load_env_near_exe(require_local=True,  # require a sibling .env
+                             verbose=("--debug-env" in sys.argv))
 
 REQUEST_TIMEOUT = int(float(os.getenv("REQUEST_TIMEOUT", "20")))
 NEWSAPI_KEY       = os.getenv("NEWSAPI_KEY", "")

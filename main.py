@@ -1,10 +1,11 @@
 # main.py
 import os, argparse
 from pathlib import Path
-from dotenv import load_dotenv
+import sys
+from config_loader import load_env_near_exe
 
-
-load_dotenv(override=True)
+env_info = load_env_near_exe(require_local=True,  # require a sibling .env
+                             verbose=("--debug-env" in sys.argv))
 
 
 from news_sources import fetch_both
